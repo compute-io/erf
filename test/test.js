@@ -5,7 +5,7 @@ var // Expectation library:
 	chai = require( 'chai' ),
 
 	// Module to be tested:
-	lib = require( './../lib' );
+	erf = require( './../lib' );
 
 
 // VARIABLES //
@@ -20,7 +20,7 @@ describe( 'compute-erf', function tests() {
 	'use strict';
 
 	it( 'should export a function', function test() {
-		expect( lib ).to.be.a( 'function' );
+		expect( erf ).to.be.a( 'function' );
 	});
 
 	it( 'should do something' );

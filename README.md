@@ -19,14 +19,14 @@ For use in the browser, use [browserify](https://github.com/substack/node-browse
 To use the module,
 
 ``` javascript
-var lib = require( 'compute-erf' );
+var erf = require( 'compute-erf' );
 ```
 
 
 ## Examples
 
 ``` javascript
-var lib = require( 'compute-erf' );
+
 ```
 
 To run the example code from the top-level application directory,

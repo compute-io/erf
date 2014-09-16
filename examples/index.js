@@ -1,1 +1,1 @@
-var module = require( './../lib' );
+var erf = require( './../lib' );

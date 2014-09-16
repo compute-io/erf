@@ -25,7 +25,9 @@
   "keywords": [
     "compute.io",
     "compute",
-    "computation"
+    "computation",
+    "erf",
+    "error function"
   ],
   "bugs": {
     "url": "https://github.com/compute-io/erf/issues"
