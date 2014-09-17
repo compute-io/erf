@@ -84,4 +84,47 @@ describe( 'compute-erf', function tests() {
 		}
 	});
 
+	it( 'should evaluate the error function', function test() {
+		var values, expected;
+
+		values = [
+			1e-306,
+			-1e-306,
+			1e-299,
+			-1e-299,
+			0.8,
+			-0.8,
+			1,
+			-1,
+			10,
+			-10,
+			2,
+			-2,
+			3,
+			-3
+		];
+
+		// Evaluated on Wolfram Alpha:
+		expected = [
+			1.128379e-300,
+			-1.128379e-300,
+			1.128379e-299,
+			-1.128379e-299,
+			0.742101,
+			-0.742101,
+			0.84270079,
+			-0.84270079,
+			0.999999999,
+			-0.999999999,
+			0.995322265,
+			-0.995322265,
+			0.9999779095,
+			-0.9999779095
+		];
+
+		for ( var i = 0; i < values.length; i++ ) {
+			assert.closeTo( erf( values[ i ] ), expected[ i ], 1e-7 );
+		}
+	});
+
 });
