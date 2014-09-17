@@ -22,11 +22,26 @@ To use the module,
 var erf = require( 'compute-erf' );
 ```
 
+The method accepts a single argument: an `array` of numeric values, which may include `NaN`, `+infinity`, and `-infinity`. The error function is evaluated for each value.
+
+``` javascript
+erf( [ -10, -1, 0, 1, 10 ] );
+```
+
 
 ## Examples
 
 ``` javascript
+// Simulate some data...
+var data = new Array( 100 );
 
+for ( var i = 0; i < data.length; i++ ) {
+	data[ i ] = Math.random()*20 - 10;
+}
+
+// Evaluate the error function for each datum:
+console.log( erf( data ) );
+// returns [...]
 ```
 
 To run the example code from the top-level application directory,
