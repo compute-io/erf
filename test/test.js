@@ -23,9 +23,8 @@ describe( 'compute-erf', function tests() {
 		expect( erf ).to.be.a( 'function' );
 	});
 
-	it( 'should throw an error if provided a non-array', function test() {
+	it( 'should throw an error if not provided a numeric value or an array', function test() {
 		var values = [
-				5,
 				'5',
 				true,
 				undefined,
@@ -68,24 +67,28 @@ describe( 'compute-erf', function tests() {
 	});
 
 	it( 'should return NaN if provided a NaN', function test() {
-		var val = erf( [ NaN ] )[ 0 ];
+		var val = erf( NaN );
 		assert.isNumber( val );
 		assert.ok( val !== val );
 	});
 
 	it( 'should return 1 if provided positive infinity', function test() {
 		var inf = Number.POSITIVE_INFINITY,
-			val = erf( [ inf ] )[ 0 ];
+			val = erf( inf );
 		assert.strictEqual( val, 1 );
 	});
 
 	it( 'should return -1 if provided negative infinity', function test() {
 		var ninf = Number.NEGATIVE_INFINITY,
-			val = erf( [ ninf ] )[ 0 ];
+			val = erf( ninf );
 		assert.strictEqual( val, -1 );
 	});
 
-	it( 'should return an array of numbers', function test() {
+	it( 'should return a numeric value if provided a numeric value', function test() {
+		assert.isNumber( erf( 1 ) );
+	});
+
+	it( 'should return an array of numbers if provided an array', function test() {
 		var values = [
 				1e-306,
 				-1e-306,

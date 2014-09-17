@@ -22,9 +22,10 @@ To use the module,
 var erf = require( 'compute-erf' );
 ```
 
-The method accepts a single argument: an `array` of numeric values, which may include `NaN`, `+infinity`, and `-infinity`. The error function is evaluated for each value.
+The method accepts a single argument: either a single `numeric` value or an `array` of numeric values, which may include `NaN`, `+infinity`, and `-infinity`. For an input `array`, the error function is evaluated for each value.
 
 ``` javascript
+erf( -1 );
 erf( [ -10, -1, 0, 1, 10 ] );
 ```
 
