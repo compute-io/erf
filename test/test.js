@@ -23,13 +23,13 @@ describe( 'compute-erf', function tests() {
 		expect( erf ).to.be.a( 'function' );
 	});
 
-	it( 'should throw an error if provided a non-numeric value', function test() {
+	it( 'should throw an error if provided a non-array', function test() {
 		var values = [
+				5,
 				'5',
 				true,
 				undefined,
 				null,
-				[],
 				{},
 				function(){}
 			];
@@ -45,23 +45,47 @@ describe( 'compute-erf', function tests() {
 		}
 	});
 
+	it( 'should throw an error if a data array contains non-numeric values', function test() {
+		var values = [
+				'5',
+				true,
+				undefined,
+				null,
+				[],
+				{},
+				function(){}
+			];
+
+		for ( var i = 0; i < values.length; i++ ) {
+			expect( badValue( [ values[i] ] ) ).to.throw( TypeError );
+		}
+
+		function badValue( value ) {
+			return function() {
+				erf( value );
+			};
+		}
+	});
+
 	it( 'should return NaN if provided a NaN', function test() {
-		var val = erf( NaN );
+		var val = erf( [ NaN ] )[ 0 ];
 		assert.isNumber( val );
 		assert.ok( val !== val );
 	});
 
 	it( 'should return 1 if provided positive infinity', function test() {
-		var inf = Number.POSITIVE_INFINITY;
-		assert.strictEqual( erf( inf ), 1 );
+		var inf = Number.POSITIVE_INFINITY,
+			val = erf( [ inf ] )[ 0 ];
+		assert.strictEqual( val, 1 );
 	});
 
 	it( 'should return -1 if provided negative infinity', function test() {
-		var ninf = Number.NEGATIVE_INFINITY;
-		assert.strictEqual( erf( ninf ), -1 );
+		var ninf = Number.NEGATIVE_INFINITY,
+			val = erf( [ ninf ] )[ 0 ];
+		assert.strictEqual( val, -1 );
 	});
 
-	it( 'should return a number', function test() {
+	it( 'should return an array of numbers', function test() {
 		var values = [
 				1e-306,
 				-1e-306,
@@ -77,15 +101,18 @@ describe( 'compute-erf', function tests() {
 				-2,
 				3,
 				-3
-			];
+			],
+			val;
 
 		for ( var i = 0; i < values.length; i++ ) {
-			assert.isNumber( erf( values[i] ) );
+			val = erf( [ values[ i ] ] );
+			assert.isArray( val );
+			assert.isNumber( val[ 0 ] );
 		}
 	});
 
 	it( 'should evaluate the error function', function test() {
-		var values, expected;
+		var values, expected, actual;
 
 		values = [
 			1e-306,
@@ -122,8 +149,10 @@ describe( 'compute-erf', function tests() {
 			-0.9999779095
 		];
 
-		for ( var i = 0; i < values.length; i++ ) {
-			assert.closeTo( erf( values[ i ] ), expected[ i ], 1e-7 );
+		actual = erf( values );
+
+		for ( var i = 0; i < actual.length; i++ ) {
+			assert.closeTo( actual[ i ], expected[ i ], 1e-7 );
 		}
 	});
 
