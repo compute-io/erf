@@ -107,10 +107,10 @@ describe( 'compute-erf', function tests() {
 			],
 			val;
 
-		for ( var i = 0; i < values.length; i++ ) {
-			val = erf( [ values[ i ] ] );
-			assert.isArray( val );
-			assert.isNumber( val[ 0 ] );
+		val = erf( values );
+		assert.isArray( val );
+		for ( var i = 0; i < val.length; i++ ) {
+			assert.isNumber( val[ i ] );
 		}
 	});
 
