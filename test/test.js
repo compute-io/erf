@@ -119,6 +119,7 @@ describe( 'compute-erf', function tests() {
 	it( 'should throw an error if an input array contains non-numeric values (if not provided an accessor)', function test() {
 		var values = [
 			'5',
+			new Number( 5 ),
 			true,
 			undefined,
 			null,
@@ -140,6 +141,7 @@ describe( 'compute-erf', function tests() {
 	it( 'should throw an error if an accessed array value is not numeric', function test() {
 		var values = [
 			'5',
+			new Number( 5 ),
 			true,
 			undefined,
 			null,
