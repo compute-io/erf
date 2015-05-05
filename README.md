@@ -16,31 +16,78 @@ For use in the browser, use [browserify](https://github.com/substack/node-browse
 
 ## Usage
 
-To use the module,
-
 ``` javascript
 var erf = require( 'compute-erf' );
 ```
 
-The method accepts a single argument: either a single `numeric` value or an `array` of numeric values, which may include `NaN`, `+infinity`, and `-infinity`. For an input `array`, the error function is evaluated for each value.
+
+#### erf( x[, options] )
+
+Evaluates the [error function](http://en.wikipedia.org/wiki/Error_function). The function accepts as its first argument either a single `numeric` value or an `array` of numeric values, which may include `NaN`, `+infinity`, and `-infinity`. For an input `array`, the `erf` function is evaluated for each value.
 
 ``` javascript
 erf( -1 );
+// returns -0.8427
+
 erf( [ -10, -1, 0, 1, 10 ] );
+// returns [ -1, -0.8427, 0, 0.8427, 1 ]
 ```
+
+When provided an input `array`, the function accepts two `options`:
+
+*  __copy__: `boolean` indicating whether to return a new `array` containing the `erf` values. Default: `true`.
+*  __accessor__: accessor `function` for accessing numeric values in object `arrays`.
+
+To mutate the input `array` (e.g., when input values can be discarded or when optimizing memory usage), set the `copy` option to `false`.
+
+``` javascript
+var arr = [ -10, -1, 0, 1, 10 ];
+
+var vals = erf( arr, {
+	'copy': false
+});
+// returns [ -1, -0.8427, 0, 0.8427, 1 ]
+
+console.log( arr === vals );
+// returns true
+```
+
+For object `arrays`, provide an accessor `function` for accessing `array` values.
+
+``` javascript
+var data = [
+	['beep', -10],
+	['boop', -1],
+	['bip', 0],
+	['bap', 1],
+	['baz', 10]
+];
+
+function getValue( d, i ) {
+	return d[ 1 ];
+}
+
+var vals = erf( data, {
+	'accessor': getValue
+});
+// returns [ -1, -0.8427, 0, 0.8427, 1 ]
+```
+
+__Note__: the function returns an `array` with a length equal to the original input `array`.
+
+
 
 
 ## Examples
 
 ``` javascript
-// Simulate some data...
-var data = new Array( 100 );
+var erf = require( 'compute-erf' );
 
+var data = new Array( 100 );
 for ( var i = 0; i < data.length; i++ ) {
 	data[ i ] = Math.random()*20 - 10;
 }
 
-// Evaluate the error function for each datum:
 console.log( erf( data ) );
 // returns [...]
 ```
@@ -56,7 +103,7 @@ $ node ./examples/index.js
 
 ### Unit
 
-Unit tests use the [Mocha](http://visionmedia.github.io/mocha) test framework with [Chai](http://chaijs.com) assertions. To run the tests, execute the following command in the top-level application directory:
+Unit tests use the [Mocha](http://mochajs.org) test framework with [Chai](http://chaijs.com) assertions. To run the tests, execute the following command in the top-level application directory:
 
 ``` bash
 $ make test
@@ -76,19 +123,19 @@ $ make test-cov
 Istanbul creates a `./reports/coverage` directory. To access an HTML version of the report,
 
 ``` bash
-$ open reports/coverage/lcov-report/index.html
+$ make view-cov
 ```
 
 
+---
 ## License
 
 [MIT license](http://opensource.org/licenses/MIT). 
 
 
----
 ## Copyright
 
-Copyright &copy; 2014. Athan Reines.
+Copyright &copy; 2014-2015. Athan Reines.
 
 
 [npm-image]: http://img.shields.io/npm/v/compute-erf.svg
