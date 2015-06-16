@@ -198,11 +198,8 @@ bool = ( mat === out );
 ## Examples
 
 ``` javascript
-'use strict';
-
 var matrix = require( 'dstructs-matrix' ),
-	erf = require( 'compute-erf' ),
-	util = require( 'util' );
+	erf = require( 'compute-erf' );
 
 var data,
 	mat,
@@ -240,9 +237,6 @@ out = erf( data, {
 	'path': 'x/1',
 	'sep': '/'
 });
-console.log( 'Deepset:' );
-console.log( util.inspect( out ) );
-console.log( '\n' );
 
 // Typed arrays...
 data = new Int32Array( 10 );
