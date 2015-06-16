@@ -8,7 +8,7 @@ The [error function](https://en.wikipedia.org/wiki/Square_root) is defined as
 
 <div class="equation" align="center" data-raw-text="
     \operatorname{erf}(x) = \frac{2}{\sqrt\pi}\int_0^x e^{-t^2}\,\mathrm dt." data-equation="eq:error_function">
-	<img src="" alt="Equation of the error function.">
+	<img src="https://cdn.rawgit.com/compute-io/erf/2722987b7d30b1bdf0b1f03e835ecad80d9cce82/docs/img/eqn.svg" alt="Equation of the error function.">
 	<br>
 </div>
 
