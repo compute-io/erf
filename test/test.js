@@ -6,8 +6,14 @@
 var // Expectation library:
 	chai = require( 'chai' ),
 
+	// Matrix data structure:
+	matrix = require( 'dstructs-matrix' ),
+
 	// Module to be tested:
-	erf = require( './../lib' );
+	erf = require( './../lib' ),
+
+	// Error function:
+	ERF = require( './../lib/number.js' );
 
 
 // VARIABLES //
@@ -24,15 +30,15 @@ describe( 'compute-erf', function tests() {
 		expect( erf ).to.be.a( 'function' );
 	});
 
-	it( 'should throw an error if not provided a numeric value or an array', function test() {
+	it( 'should throw an error if the first argument is neither a number or array-like or matrix-like', function test() {
 		var values = [
-			'5',
-			new Number( 5 ),
+			// '5', // valid as is array-like (length)
 			true,
 			undefined,
 			null,
-			{},
-			function(){}
+			NaN,
+			function(){},
+			{}
 		];
 
 		for ( var i = 0; i < values.length; i++ ) {
@@ -45,54 +51,7 @@ describe( 'compute-erf', function tests() {
 		}
 	});
 
-	it( 'should throw an error if provided an options argument which is not an object', function test() {
-		var values = [
-			'5',
-			5,
-			true,
-			undefined,
-			null,
-			NaN,
-			[],
-			function(){}
-		];
-
-		for ( var i = 0; i < values.length; i++ ) {
-			expect( badValue( values[i] ) ).to.throw( TypeError );
-		}
-		function badValue( value ) {
-			return function() {
-				erf( [1,2,3], value );
-			};
-		}
-	});
-
-	it( 'should throw an error if provided a copy option which is not a boolean primitive', function test() {
-		var values = [
-			'5',
-			5,
-			new Boolean( true ),
-			undefined,
-			null,
-			NaN,
-			[],
-			{},
-			function(){}
-		];
-
-		for ( var i = 0; i < values.length; i++ ) {
-			expect( badValue( values[i] ) ).to.throw( TypeError );
-		}
-		function badValue( value ) {
-			return function() {
-				erf( [1,2,3], {
-					'copy': value
-				});
-			};
-		}
-	});
-
-	it( 'should throw an error if provided an accessor option which is not a function', function test() {
+	it( 'should throw an error if provided an invalid option', function test() {
 		var values = [
 			'5',
 			5,
@@ -116,251 +75,282 @@ describe( 'compute-erf', function tests() {
 		}
 	});
 
-	it( 'should throw an error if an input array contains non-numeric values (if not provided an accessor)', function test() {
+	it( 'should throw an error if provided an array and an unrecognized/unsupported data type option', function test() {
 		var values = [
-			'5',
-			new Number( 5 ),
-			true,
-			undefined,
-			null,
-			[],
-			{},
-			function(){}
+			'beep',
+			'boop'
 		];
 
 		for ( var i = 0; i < values.length; i++ ) {
-			expect( badValue( [ values[i] ] ) ).to.throw( TypeError );
+			expect( badValue( values[i] ) ).to.throw( Error );
 		}
 		function badValue( value ) {
 			return function() {
-				erf( value );
-			};
-		}
-	});
-
-	it( 'should throw an error if an accessed array value is not numeric', function test() {
-		var values = [
-			'5',
-			new Number( 5 ),
-			true,
-			undefined,
-			null,
-			NaN,
-			[],
-			{},
-			function(){}
-		];
-
-		for ( var i = 0; i < values.length; i++ ) {
-			expect( badValue( [ values[i] ] ) ).to.throw( TypeError );
-		}
-		function badValue( value ) {
-			return function() {
-				var arr = [
-					{'x': value}
-				];
-				erf( arr, {
-					'accessor': getValue
+				erf( [1,2,3], {
+					'dtype': value
 				});
 			};
 		}
-		function getValue( d ) {
-			return d.x;
+	});
+
+	it( 'should throw an error if provided a matrix and an unrecognized/unsupported data type option', function test() {
+		var values = [
+			'beep',
+			'boop'
+		];
+
+		for ( var i = 0; i < values.length; i++ ) {
+			expect( badValue( values[i] ) ).to.throw( Error );
+		}
+		function badValue( value ) {
+			return function() {
+				erf( matrix( [2,2] ), {
+					'dtype': value
+				});
+			};
 		}
 	});
 
-	it( 'should return NaN if provided a NaN', function test() {
-		var val = erf( NaN );
-		assert.isNumber( val );
-		assert.ok( val !== val );
+	it( 'should compute the error function when provided a number', function test() {
+		assert.strictEqual( erf( 0 ), 0 );
+		assert.closeTo( erf( 0.5 ), 0.52049987, 1e-7 );
 	});
 
-	it( 'should return 1 if provided positive infinity', function test() {
-		var inf = Number.POSITIVE_INFINITY,
-			val = erf( inf );
-		assert.strictEqual( val, 1 );
-	});
+	it( 'should evaluate the error function when provided a plain array', function test() {
+		var data, actual, expected, i;
 
-	it( 'should return -1 if provided negative infinity', function test() {
-		var ninf = Number.NEGATIVE_INFINITY,
-			val = erf( ninf );
-		assert.strictEqual( val, -1 );
-	});
-
-	it( 'should return a numeric value if provided a numeric value', function test() {
-		assert.isNumber( erf( 1 ) );
-	});
-
-	it( 'should return an array of numbers if provided an array', function test() {
-		var values, out;
-
-		values = [
-			1e-306,
-			-1e-306,
-			1e-299,
-			-1e-299,
-			0.8,
-			-0.8,
-			1,
-			-1,
-			10,
-			-10,
-			2,
-			-2,
-			3,
-			-3
+		data = [ -3, -2, -1, 0, 1, 2, 3 ];
+		expected = [
+			-0.9999779,
+			-0.9953222,
+			-0.8427007,
+			0,
+			0.8427007,
+			0.9953222,
+			0.9999779
 		];
 
-		out = erf( values );
-		assert.isArray( out );
-		for ( var i = 0; i < out.length; i++ ) {
-			assert.isNumber( out[ i ] );
+		actual = erf( data );
+		assert.notEqual( actual, data );
+
+		for ( i = 0; i < actual.length; i++ ) {
+			assert.closeTo( actual[ i ], expected[ i ], 1e-7 );
 		}
-	});
 
-	it( 'should not mutate the input array by default', function test() {
-		var values, out;
-
-		values = [
-			1e-306,
-			-1e-306,
-			1e-299,
-			-1e-299,
-			0.8,
-			-0.8,
-			1,
-			-1,
-			10,
-			-10,
-			2,
-			-2,
-			3,
-			-3
-		];
-
-		out = erf( values );
-		assert.ok( out !== values );
-	});
-
-	it( 'should mutate an input array if the `copy` option is `false`', function test() {
-		var values, out;
-
-		values = [
-			1e-306,
-			-1e-306,
-			1e-299,
-			-1e-299,
-			0.8,
-			-0.8,
-			1,
-			-1,
-			10,
-			-10,
-			2,
-			-2,
-			3,
-			-3
-		];
-
-		out = erf( values, {
+		// Mutate...
+		actual = erf( data, {
 			'copy': false
 		});
-		assert.ok( out === values );
-	});
+		assert.strictEqual( actual, data );
 
-	it( 'should evaluate the error function', function test() {
-		var values, expected, actual;
-
-		values = [
-			1e-306,
-			-1e-306,
-			1e-299,
-			-1e-299,
-			0.8,
-			-0.8,
-			1,
-			-1,
-			10,
-			-10,
-			2,
-			-2,
-			3,
-			-3
-		];
-
-		// Evaluated on Wolfram Alpha:
-		expected = [
-			1.128379e-300,
-			-1.128379e-300,
-			1.128379e-299,
-			-1.128379e-299,
-			0.742101,
-			-0.742101,
-			0.84270079,
-			-0.84270079,
-			0.999999999,
-			-0.999999999,
-			0.995322265,
-			-0.995322265,
-			0.9999779095,
-			-0.9999779095
-		];
-
-		actual = erf( values );
-
-		for ( var i = 0; i < actual.length; i++ ) {
-			assert.closeTo( actual[ i ], expected[ i ], 1e-7 );
+		for ( i = 0; i < actual.length; i++ ) {
+			assert.closeTo( data[ i ], expected[ i ], 1e-7 );
 		}
 	});
 
-	it( 'should evaluate the error function using an accessor function', function test() {
-		var values, expected, actual;
+	it( 'should evaluate the error function when provided a typed array', function test() {
+		var data, actual, expected, i;
 
-		values = [
-			[1,1e-306],
-			[2,-1e-306],
-			[3,1e-299],
-			[4,-1e-299],
-			[5,0.8],
-			[6,-0.8],
-			[7,1],
-			[8,-1],
-			[9,10],
-			[10,-10],
-			[11,2],
-			[12,-2],
-			[13,3],
-			[14,-3]
+		data = new Int8Array( [ -3, -2, -1, 0, 1, 2, 3 ] );
+
+		expected = new Float64Array( [
+			-0.9999779,
+			-0.9953222,
+			-0.8427007,
+			0,
+			0.8427007,
+			0.9953222,
+			0.9999779
+		]);
+
+		actual = erf( data );
+		assert.notEqual( actual, data );
+
+		for ( i = 0; i < actual.length; i++ ) {
+			assert.closeTo( actual[ i ], expected[ i ], 1e-7 );
+		}
+
+		// Mutate:
+		actual = erf( data, {
+			'copy': false
+		});
+		expected = new Int8Array( [ 0, 0, 0, 0, 0, 0, 0 ] );
+		assert.strictEqual( actual, data );
+
+		for ( i = 0; i < actual.length; i++ ) {
+			assert.closeTo( data[ i ], expected[ i ], 1e-7 );
+		}
+	});
+
+	it( 'should evaluate the error function element-wise and return an array of a specific type', function test() {
+		var data, actual, expected;
+
+		data = [ -3, -2, -1, 0, 1, 2, 3 ];
+		expected = new Int8Array( [ 0, 0, 0, 0, 0, 0, 0 ] );
+
+		actual = erf( data, {
+			'dtype': 'int8'
+		});
+		assert.notEqual( actual, data );
+		assert.deepEqual( actual, expected );
+	});
+
+	it( 'should evaluate the error function element-wise using an accessor', function test() {
+		var data, actual, expected, i;
+
+		data = [
+			[0,-3],
+			[1,-2],
+			[2,-1],
+			[3,0],
+			[4,1],
+			[5,2],
+			[6,3]
 		];
 
-		// Evaluated on Wolfram Alpha:
 		expected = [
-			1.128379e-300,
-			-1.128379e-300,
-			1.128379e-299,
-			-1.128379e-299,
-			0.742101,
-			-0.742101,
-			0.84270079,
-			-0.84270079,
-			0.999999999,
-			-0.999999999,
-			0.995322265,
-			-0.995322265,
-			0.9999779095,
-			-0.9999779095
+			-0.9999779,
+			-0.9953222,
+			-0.8427007,
+			0,
+			0.8427007,
+			0.9953222,
+			0.9999779
 		];
 
-		actual = erf( values, {
+		actual = erf( data, {
 			'accessor': getValue
 		});
+		assert.notEqual( actual, data );
 
-		for ( var i = 0; i < actual.length; i++ ) {
+		for ( i = 0; i < actual.length; i++ ) {
 			assert.closeTo( actual[ i ], expected[ i ], 1e-7 );
 		}
+
+		// Mutate:
+		actual = erf( data, {
+			'accessor': getValue,
+			'copy': false
+		});
+		assert.strictEqual( actual, data );
+
+		for ( i = 0; i < actual.length; i++ ) {
+			assert.closeTo( data[ i ], expected[ i ], 1e-7 );
+		}
+
 		function getValue( d ) {
 			return d[ 1 ];
 		}
+	});
+
+	it( 'should evaluate the error function element-wise and deep set', function test() {
+		var data, actual, expected, i;
+
+		data = [
+			{'x':[0,-3]},
+			{'x':[1,-2]},
+			{'x':[2,-1]},
+			{'x':[3,0]},
+			{'x':[4,1]},
+			{'x':[5,2]},
+			{'x':[6,3]}
+		];
+		expected = [
+			{'x':[0,-0.9999779]},
+			{'x':[1,-0.9953222]},
+			{'x':[2,-0.8427007]},
+			{'x':[3,0]},
+			{'x':[4,0.8427007]},
+			{'x':[5,0.9953222]},
+			{'x':[6,0.9999779]}
+		];
+
+		actual = erf( data, {
+			'path': 'x.1'
+		});
+
+		assert.strictEqual( actual, data );
+
+		for ( i = 0; i < actual.length; i++ ) {
+			assert.closeTo( data[ i ].x[ 1 ], expected[ i ].x[ 1 ], 1e-7 );
+		}
+
+
+		// Specify a path with a custom separator...
+
+		data = [
+			{'x':[0,-3]},
+			{'x':[1,-2]},
+			{'x':[2,-1]},
+			{'x':[3,0]},
+			{'x':[4,1]},
+			{'x':[5,2]},
+			{'x':[6,3]}
+		];
+		actual = erf( data, {
+			'path': 'x/1',
+			'sep': '/'
+		});
+		assert.strictEqual( actual, data );
+
+		for ( i = 0; i < actual.length; i++ ) {
+			assert.closeTo( actual[ i ].x[ 1 ], expected[ i ].x[ 1 ], 1e-7 );
+		}
+
+	});
+
+	it( 'should evaluate the error function element-wise when provided a matrix', function test() {
+		var mat,
+			out,
+			d1,
+			d2,
+			i;
+
+		d1 = new Float64Array( 25 );
+		d2 = new Float64Array( 25 );
+		for ( i = 0; i < d1.length; i++ ) {
+			d1[ i ] = i / 5;
+			d2[ i ] = ERF( i / 5);
+		}
+		mat = matrix( d1, [5,5], 'float64' );
+		out = erf( mat );
+
+		assert.deepEqual( out.data, d2 );
+
+		// Mutate...
+		out = erf( mat, {
+			'copy': false
+		});
+		assert.strictEqual( mat, out );
+		assert.deepEqual( mat.data, d2 );
+	});
+
+	it( 'should evaluate the error function element-wise and return a matrix of a specific type', function test() {
+		var mat,
+			out,
+			d1,
+			d2,
+			i;
+
+		d1 = new Float64Array( 25 );
+		d2 = new Float32Array( 25 );
+		for ( i = 0; i < d1.length; i++ ) {
+			d1[ i ] = i / 5;
+			d2[ i ] = ERF( i / 5 );
+		}
+		mat = matrix( d1, [5,5], 'float64' );
+		out = erf( mat, {
+			'dtype': 'float32'
+		});
+
+		assert.strictEqual( out.dtype, 'float32' );
+		assert.deepEqual( out.data, d2 );
+	});
+
+	it( 'should return `null` if provided an empty data structure', function test() {
+		assert.isNull( erf( [] ) );
+		assert.isNull( erf( matrix( [0,0] ) ) );
+		assert.isNull( erf( new Int8Array() ) );
 	});
 
 });
