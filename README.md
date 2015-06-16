@@ -4,6 +4,13 @@ erf
 
 > Error function.
 
+The [error function](https://en.wikipedia.org/wiki/Square_root) is defined as
+
+<div class="equation" align="center" data-raw-text="
+    \operatorname{erf}(x) = \frac{2}{\sqrt\pi}\int_0^x e^{-t^2}\,\mathrm dt." data-equation="eq:error_function">
+	<img src="" alt="Equation of the error function.">
+	<br>
+</div>
 
 ## Installation
 
@@ -130,12 +137,12 @@ $ make view-cov
 ---
 ## License
 
-[MIT license](http://opensource.org/licenses/MIT). 
+[MIT license](http://opensource.org/licenses/MIT).
 
 
 ## Copyright
 
-Copyright &copy; 2014-2015. Athan Reines.
+Copyright &copy; 2014-2015. The [Compute.io](https://github.com/compute-io) Authors.
 
 
 [npm-image]: http://img.shields.io/npm/v/compute-erf.svg
