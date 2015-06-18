@@ -1,8 +1,7 @@
 'use strict';
 
 var matrix = require( 'dstructs-matrix' ),
-	erf = require( './../lib' ),
-	util = require( 'util' );
+	erf = require( './../lib' );
 
 var data,
 	mat,
@@ -48,7 +47,7 @@ out = erf( data, {
 	'sep': '/'
 });
 console.log( 'Deepset:' );
-console.log( util.inspect( out ) );
+console.dir( out );
 console.log( '\n' );
 
 

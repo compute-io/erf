@@ -30,11 +30,7 @@ var erf = require( 'compute-erf' );
 
 #### erf( x[, options] )
 
-Evaluates the [error function](http://en.wikipedia.org/wiki/Error_function).
-
-`x` may be either a [`number`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number), an [`array`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array), a [`typed array`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Typed_arrays), or a [`matrix`](https://github.com/dstructs/matrix).
-
-Values may include `NaN`, `+infinity`, and `-infinity`. For an input `array` and `matrix`, the `erf` function is evaluated for each value.
+Evaluates the [error function](http://en.wikipedia.org/wiki/Error_function) (element-wise). `x` may be either a [`number`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number), an [`array`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array), a [`typed array`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Typed_arrays), or a [`matrix`](https://github.com/dstructs/matrix). Values may include `NaN`, `+infinity`, and `-infinity`.
 
 ``` javascript
 var matrix = require( 'dstructs-matrix' ),
@@ -84,7 +80,7 @@ The function accepts the following `options`:
 *	__path__: [deepget](https://github.com/kgryte/utils-deep-get)/[deepset](https://github.com/kgryte/utils-deep-set) key path.
 *	__sep__: [deepget](https://github.com/kgryte/utils-deep-get)/[deepset](https://github.com/kgryte/utils-deep-set) key path separator. Default: `'.'`.
 
-For object `arrays`, provide an accessor `function` for accessing `array` values.
+For non-numeric `arrays`, provide an accessor `function` for accessing `array` values.
 
 ``` javascript
 var data = [
@@ -99,13 +95,11 @@ function getValue( d, i ) {
 	return d[ 1 ];
 }
 
-var vals = erf( data, {
+var out = erf( data, {
 	'accessor': getValue
 });
 // returns [ -1, -0.8427, 0, 0.8427, 1 ]
 ```
-
-__Note__: the function returns an `array` with a length equal to the original input `array`.
 
 To [deepset](https://github.com/kgryte/utils-deep-set) an object `array`, provide a key path and, optionally, a key path separator.
 
@@ -168,7 +162,7 @@ var out = erf( data, {
 });
 // returns [ -1, -0.8427, 0, 0.8427, 1 ]
 
-bool = (arr === vals );
+bool = (arr === out );
 // returns true
 
 data = new Float64Array( 6 );
@@ -194,6 +188,7 @@ out = erf( mat, {
 bool = ( mat === out );
 // returns true
 ```
+
 
 ## Examples
 

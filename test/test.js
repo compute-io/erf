@@ -192,6 +192,7 @@ describe( 'compute-erf', function tests() {
 			'dtype': 'int8'
 		});
 		assert.notEqual( actual, data );
+		assert.strictEqual( actual.BYTES_PER_ELEMENT, 1 );
 		assert.deepEqual( actual, expected );
 	});
 
@@ -275,9 +276,7 @@ describe( 'compute-erf', function tests() {
 			assert.closeTo( data[ i ].x[ 1 ], expected[ i ].x[ 1 ], 1e-7 );
 		}
 
-
 		// Specify a path with a custom separator...
-
 		data = [
 			{'x':[0,-3]},
 			{'x':[1,-2]},
@@ -296,7 +295,6 @@ describe( 'compute-erf', function tests() {
 		for ( i = 0; i < actual.length; i++ ) {
 			assert.closeTo( actual[ i ].x[ 1 ], expected[ i ].x[ 1 ], 1e-7 );
 		}
-
 	});
 
 	it( 'should evaluate the error function element-wise when provided a matrix', function test() {
@@ -310,7 +308,7 @@ describe( 'compute-erf', function tests() {
 		d2 = new Float64Array( 25 );
 		for ( i = 0; i < d1.length; i++ ) {
 			d1[ i ] = i / 5;
-			d2[ i ] = ERF( i / 5);
+			d2[ i ] = ERF( i / 5 );
 		}
 		mat = matrix( d1, [5,5], 'float64' );
 		out = erf( mat );

@@ -35,7 +35,13 @@
     "mathematics",
     "math",
     "statistics",
-    "stats"
+    "stats",
+    "matrices",
+    "matrix",
+    "dstructs",
+    "array",
+    "arrays",
+    "accessor"
   ],
   "bugs": {
     "url": "https://github.com/compute-io/erf/issues"
