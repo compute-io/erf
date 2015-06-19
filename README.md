@@ -162,7 +162,7 @@ var out = erf( data, {
 });
 // returns [ -1, -0.8427, 0, 0.8427, 1 ]
 
-bool = (arr === out );
+bool = ( data === out );
 // returns true
 
 data = new Float64Array( 6 );
