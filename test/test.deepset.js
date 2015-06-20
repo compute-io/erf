@@ -78,12 +78,11 @@ describe( 'deepset erf', function tests() {
 		for ( i = 0; i < data.length; i++ ) {
 			assert.closeTo( data[ i ].x[ 1 ], expected[ i ].x[ 1 ], 1e-7, 'custm separator' );
 		}
-
 	});
 
-	it( 'should return null if provided an empty array', function test() {
-		assert.isNull( erf( [], 'x' ) );
-		assert.isNull( erf( [], 'x', '/' ) );
+	it( 'should return an empty array if provided an empty array', function test() {
+		assert.deepEqual( erf( [], 'x' ), [] );
+		assert.deepEqual( erf( [], 'x', '/' ), [] );
 	});
 
 });

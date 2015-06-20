@@ -79,12 +79,11 @@ describe( 'array erf', function tests() {
 		for ( i = 0; i < actual.length; i++ ) {
 			assert.closeTo( actual[ i ], expected[ i ], 1e-7, 'typed arrays' );
 		}
-
 	});
 
-	it( 'should return null if provided an empty array', function test() {
-		assert.isNull( erf( [], [] ) );
-		assert.isNull( erf( new Int8Array(), new Int8Array() ) );
+	it( 'should return an empty array if provided an empty array', function test() {
+		assert.deepEqual( erf( [], [] ), [] );
+		assert.deepEqual( erf( new Int8Array(), new Int8Array() ), new Int8Array() );
 	});
 
 });

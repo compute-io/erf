@@ -12,6 +12,7 @@ The [error function](https://en.wikipedia.org/wiki/Error_function) is defined as
 	<br>
 </div>
 
+
 ## Installation
 
 ``` bash

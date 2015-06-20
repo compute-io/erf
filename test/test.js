@@ -9,6 +9,9 @@ var // Expectation library:
 	// Matrix data structure:
 	matrix = require( 'dstructs-matrix' ),
 
+	// Validate a value is NaN:
+	isnan = require( 'validate.io-nan' ),
+
 	// Module to be tested:
 	erf = require( './../lib' ),
 
@@ -36,7 +39,7 @@ describe( 'compute-erf', function tests() {
 			true,
 			undefined,
 			null,
-			NaN,
+			// NaN, // allowed
 			function(){},
 			{}
 		];
@@ -114,6 +117,8 @@ describe( 'compute-erf', function tests() {
 	it( 'should compute the error function when provided a number', function test() {
 		assert.strictEqual( erf( 0 ), 0 );
 		assert.closeTo( erf( 0.5 ), 0.52049987, 1e-7 );
+
+		assert.isTrue( isnan( erf( NaN ) ) );
 	});
 
 	it( 'should evaluate the error function when provided a plain array', function test() {
@@ -345,10 +350,10 @@ describe( 'compute-erf', function tests() {
 		assert.deepEqual( out.data, d2 );
 	});
 
-	it( 'should return `null` if provided an empty data structure', function test() {
-		assert.isNull( erf( [] ) );
-		assert.isNull( erf( matrix( [0,0] ) ) );
-		assert.isNull( erf( new Int8Array() ) );
+	it( 'should return an empty data structure if provided an empty data structure', function test() {
+		assert.deepEqual( erf( [] ), [] );
+		assert.deepEqual( erf( matrix( [0,0] ) ).data, new Float64Array() );
+		assert.deepEqual( erf( new Int8Array() ), new Float64Array() );
 	});
 
 });

@@ -41,7 +41,11 @@
     "dstructs",
     "array",
     "arrays",
-    "accessor"
+    "accessor",
+    "deep",
+    "set",
+    "get",
+    "deepset"
   ],
   "bugs": {
     "url": "https://github.com/compute-io/erf/issues"
@@ -56,6 +60,7 @@
     "validate.io-boolean-primitive": "^1.0.0",
     "validate.io-function": "^1.0.2",
     "validate.io-matrix-like": "^1.0.2",
+    "validate.io-nan": "^1.0.3",
     "validate.io-number-primitive": "^1.0.0",
     "validate.io-object": "^1.0.4",
     "validate.io-string-primitive": "^1.0.0"

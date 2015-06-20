@@ -105,8 +105,8 @@ describe( 'accessor erf', function tests() {
 		}
 	});
 
-	it( 'should return null if provided an empty array', function test() {
-		assert.isNull( erf( [], [], getValue ) );
+	it( 'should return an empty array if provided an empty array', function test() {
+		assert.deepEqual( erf( [], [], getValue ), [] );
 		function getValue( d ) {
 			return d.x;
 		}
