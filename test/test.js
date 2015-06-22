@@ -33,27 +33,6 @@ describe( 'compute-erf', function tests() {
 		expect( erf ).to.be.a( 'function' );
 	});
 
-	it( 'should throw an error if the first argument is neither a number or array-like or matrix-like', function test() {
-		var values = [
-			// '5', // valid as is array-like (length)
-			true,
-			undefined,
-			null,
-			// NaN, // allowed
-			function(){},
-			{}
-		];
-
-		for ( var i = 0; i < values.length; i++ ) {
-			expect( badValue( values[i] ) ).to.throw( TypeError );
-		}
-		function badValue( value ) {
-			return function() {
-				erf( value );
-			};
-		}
-	});
-
 	it( 'should throw an error if provided an invalid option', function test() {
 		var values = [
 			'5',
@@ -111,6 +90,22 @@ describe( 'compute-erf', function tests() {
 					'dtype': value
 				});
 			};
+		}
+	});
+
+	it( 'should return NaN if the first argument is neither a number, array-like, matrix-like', function test() {
+		var values = [
+			// '5', // valid as is array-like (length)
+			true,
+			undefined,
+			null,
+			// NaN, // allowed
+			function(){},
+			{}
+		];
+
+		for ( var i = 0; i < values.length; i++ ) {
+			assert.isTrue( isnan( erf( values[ i ] ) ) );
 		}
 	});
 

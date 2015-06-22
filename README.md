@@ -60,16 +60,16 @@ for ( i = 0; i < 6; i++ ) {
 }
 mat = matrix( data, [3,2], 'float64' );
 /*
-	[  0  0.5
-	   1  1.5
-	   2  2.5 ]
+	[ 0  0.5
+	  1  1.5
+	  2  2.5 ]
 */
 
 out = erf( mat );
 /*
 	[  0    ~0.52
 	  ~0.84 ~0.97
-	  ~1    ~1 ]
+	  ~1    ~1    ]
 */
 ```
 
@@ -172,9 +172,9 @@ for ( i = 0; i < 6; i++ ) {
 }
 mat = matrix( data, [3,2], 'float64' );
 /*
-	[  0  0.5
-	   1  1.5
-	   2  2.5 ]
+	[ 0  0.5
+	  1  1.5
+	  2  2.5 ]
 */
 
 out = erf( mat, {
@@ -183,12 +183,70 @@ out = erf( mat, {
 /*
 	[  0    ~0.52
 	  ~0.84 ~0.97
-	  ~1    ~1 ]
+	  ~1    ~1    ]
 */
 
 bool = ( mat === out );
 // returns true
 ```
+
+
+
+## Notes
+
+*	If an element is __not__ a numeric value, the evaluated [error function](http://en.wikipedia.org/wiki/Error_function) is `NaN`.
+
+	``` javascript
+	var data, out;
+
+	out = erf( null );
+	// returns NaN
+
+	out = erf( true );
+	// returns NaN
+
+	out = erf( {'a':'b'} );
+	// returns NaN
+
+	out = erf( [ true, null, [] ] );
+	// returns [ NaN, NaN, NaN ]
+
+	function getValue( d, i ) {
+		return d.x;
+	}
+	data = [
+		{'x':true},
+		{'x':[]},
+		{'x':{}},
+		{'x':null}
+	];
+
+	out = erf( data, {
+		'accessor': getValue
+	});
+	// returns [ NaN, NaN, NaN, NaN ]
+
+	out = erf( data, {
+		'path': 'x'
+	});
+	/*
+		[
+			{'x':NaN},
+			{'x':NaN},
+			{'x':NaN,
+			{'x':NaN}
+		]
+	*/
+	```
+
+*	Be careful when providing a data structure which contains non-numeric elements and specifying an `integer` output data type, as `NaN` values are cast to `0`.
+
+	``` javascript
+	var out = erf( [ true, null, [] ], {
+		'dtype': 'int8'
+	});
+	// returns Int8Array( [0,0,0] );
+	```
 
 
 ## Examples

@@ -86,4 +86,16 @@ describe( 'array erf', function tests() {
 		assert.deepEqual( erf( new Int8Array(), new Int8Array() ), new Int8Array() );
 	});
 
+	it( 'should handle non-numeric values by setting the element to NaN', function test() {
+		var data, actual, expected;
+
+		data = [ true, null, [], {} ];
+		actual = new Array( data.length );
+		actual = erf( actual, data );
+
+		expected = [ NaN, NaN, NaN, NaN ];
+
+		assert.deepEqual( actual, expected );
+	});
+
 });
