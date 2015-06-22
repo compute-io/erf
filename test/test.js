@@ -93,7 +93,7 @@ describe( 'compute-erf', function tests() {
 		}
 	});
 
-	it( 'should return NaN if the first argument is neither a number, array-like, matrix-like', function test() {
+	it( 'should return NaN if the first argument is neither a number, array-like, or matrix-like', function test() {
 		var values = [
 			// '5', // valid as is array-like (length)
 			true,
