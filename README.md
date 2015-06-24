@@ -191,7 +191,6 @@ bool = ( mat === out );
 ```
 
 
-
 ## Notes
 
 *	If an element is __not__ a numeric value, the evaluated [error function](http://en.wikipedia.org/wiki/Error_function) is `NaN`.
