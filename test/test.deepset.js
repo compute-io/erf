@@ -38,7 +38,8 @@ describe( 'deepset erf', function tests() {
 		];
 
 		data = erf( data, 'x' );
-		// evaluated on Wolfram Alpha
+
+		// Evaluated on Wolfram Alpha:
 		expected = [
 			{'x':-0.9999779},
 			{'x':-0.9953222},
@@ -76,7 +77,7 @@ describe( 'deepset erf', function tests() {
 		];
 
 		for ( i = 0; i < data.length; i++ ) {
-			assert.closeTo( data[ i ].x[ 1 ], expected[ i ].x[ 1 ], 1e-7, 'custm separator' );
+			assert.closeTo( data[ i ].x[ 1 ], expected[ i ].x[ 1 ], 1e-7, 'custom separator' );
 		}
 	});
 

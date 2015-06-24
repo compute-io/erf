@@ -171,7 +171,7 @@ describe( 'compute-erf', function tests() {
 
 		data = new Int8Array( [ -3, -2, -1, 0, 1, 2, 3 ] );
 
-		expected = new Float64Array( [
+		expected = new Float64Array([
 			-0.9999779,
 			-0.9953222,
 			-0.8427007,

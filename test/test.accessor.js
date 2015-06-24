@@ -40,7 +40,7 @@ describe( 'accessor erf', function tests() {
 
 		actual = erf( actual, data, getValue );
 
-		// evaluated on Wolfram Alpha
+		// Evaluated on Wolfram Alpha:
 		expected = [
 			-0.9999779,
 			-0.9953222,
