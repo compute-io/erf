@@ -41,7 +41,12 @@
     "dstructs",
     "array",
     "arrays",
-    "accessor"
+    "accessor",
+    "deep",
+    "set",
+    "get",
+    "deepset",
+    "element-wise"
   ],
   "bugs": {
     "url": "https://github.com/compute-io/erf/issues"
@@ -51,14 +56,15 @@
     "dstructs-matrix": "^2.0.0",
     "utils-deep-get": "^1.0.0",
     "utils-deep-set": "^1.0.1",
-    "validate.io-array": "^1.0.6",
     "validate.io-array-like": "^1.0.1",
     "validate.io-boolean-primitive": "^1.0.0",
     "validate.io-function": "^1.0.2",
     "validate.io-matrix-like": "^1.0.2",
+    "validate.io-nan": "^1.0.3",
     "validate.io-number-primitive": "^1.0.0",
     "validate.io-object": "^1.0.4",
-    "validate.io-string-primitive": "^1.0.0"
+    "validate.io-string-primitive": "^1.0.0",
+    "validate.io-typed-array-like": "^1.0.0"
   },
   "devDependencies": {
     "chai": "3.x.x",

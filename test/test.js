@@ -9,6 +9,9 @@ var // Expectation library:
 	// Matrix data structure:
 	matrix = require( 'dstructs-matrix' ),
 
+	// Validate a value is NaN:
+	isnan = require( 'validate.io-nan' ),
+
 	// Module to be tested:
 	erf = require( './../lib' ),
 
@@ -28,27 +31,6 @@ describe( 'compute-erf', function tests() {
 
 	it( 'should export a function', function test() {
 		expect( erf ).to.be.a( 'function' );
-	});
-
-	it( 'should throw an error if the first argument is neither a number or array-like or matrix-like', function test() {
-		var values = [
-			// '5', // valid as is array-like (length)
-			true,
-			undefined,
-			null,
-			NaN,
-			function(){},
-			{}
-		];
-
-		for ( var i = 0; i < values.length; i++ ) {
-			expect( badValue( values[i] ) ).to.throw( TypeError );
-		}
-		function badValue( value ) {
-			return function() {
-				erf( value );
-			};
-		}
 	});
 
 	it( 'should throw an error if provided an invalid option', function test() {
@@ -93,6 +75,24 @@ describe( 'compute-erf', function tests() {
 		}
 	});
 
+	it( 'should throw an error if provided a typed-array and an unrecognized/unsupported data type option', function test() {
+		var values = [
+			'beep',
+			'boop'
+		];
+
+		for ( var i = 0; i < values.length; i++ ) {
+			expect( badValue( values[i] ) ).to.throw( Error );
+		}
+		function badValue( value ) {
+			return function() {
+				erf( new Int8Array([1,2,3]), {
+					'dtype': value
+				});
+			};
+		}
+	});
+
 	it( 'should throw an error if provided a matrix and an unrecognized/unsupported data type option', function test() {
 		var values = [
 			'beep',
@@ -111,9 +111,27 @@ describe( 'compute-erf', function tests() {
 		}
 	});
 
+	it( 'should return NaN if the first argument is neither a number, array-like, or matrix-like', function test() {
+		var values = [
+			// '5', // valid as is array-like (length)
+			true,
+			undefined,
+			null,
+			// NaN, // allowed
+			function(){},
+			{}
+		];
+
+		for ( var i = 0; i < values.length; i++ ) {
+			assert.isTrue( isnan( erf( values[ i ] ) ) );
+		}
+	});
+
 	it( 'should compute the error function when provided a number', function test() {
 		assert.strictEqual( erf( 0 ), 0 );
 		assert.closeTo( erf( 0.5 ), 0.52049987, 1e-7 );
+
+		assert.isTrue( isnan( erf( NaN ) ) );
 	});
 
 	it( 'should evaluate the error function when provided a plain array', function test() {
@@ -153,7 +171,7 @@ describe( 'compute-erf', function tests() {
 
 		data = new Int8Array( [ -3, -2, -1, 0, 1, 2, 3 ] );
 
-		expected = new Float64Array( [
+		expected = new Float64Array([
 			-0.9999779,
 			-0.9953222,
 			-0.8427007,
@@ -345,10 +363,10 @@ describe( 'compute-erf', function tests() {
 		assert.deepEqual( out.data, d2 );
 	});
 
-	it( 'should return `null` if provided an empty data structure', function test() {
-		assert.isNull( erf( [] ) );
-		assert.isNull( erf( matrix( [0,0] ) ) );
-		assert.isNull( erf( new Int8Array() ) );
+	it( 'should return an empty data structure if provided an empty data structure', function test() {
+		assert.deepEqual( erf( [] ), [] );
+		assert.deepEqual( erf( matrix( [0,0] ) ).data, new Float64Array() );
+		assert.deepEqual( erf( new Int8Array() ), new Float64Array() );
 	});
 
 });

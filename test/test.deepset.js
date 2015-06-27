@@ -38,7 +38,8 @@ describe( 'deepset erf', function tests() {
 		];
 
 		data = erf( data, 'x' );
-		// evaluated on Wolfram Alpha
+
+		// Evaluated on Wolfram Alpha:
 		expected = [
 			{'x':-0.9999779},
 			{'x':-0.9953222},
@@ -76,14 +77,34 @@ describe( 'deepset erf', function tests() {
 		];
 
 		for ( i = 0; i < data.length; i++ ) {
-			assert.closeTo( data[ i ].x[ 1 ], expected[ i ].x[ 1 ], 1e-7, 'custm separator' );
+			assert.closeTo( data[ i ].x[ 1 ], expected[ i ].x[ 1 ], 1e-7, 'custom separator' );
 		}
-
 	});
 
-	it( 'should return null if provided an empty array', function test() {
-		assert.isNull( erf( [], 'x' ) );
-		assert.isNull( erf( [], 'x', '/' ) );
+	it( 'should return an empty array if provided an empty array', function test() {
+		assert.deepEqual( erf( [], 'x' ), [] );
+		assert.deepEqual( erf( [], 'x', '/' ), [] );
+	});
+
+	it( 'should handle non-numeric values by setting the element to NaN', function test() {
+		var data, actual, expected;
+
+		data = [
+			{'x':true},
+			{'x':null},
+			{'x':[]},
+			{'x':{}}
+		];
+		actual = erf( data, 'x' );
+
+		expected = [
+			{'x':NaN},
+			{'x':NaN},
+			{'x':NaN},
+			{'x':NaN}
+		];
+
+		assert.deepEqual( data, expected );
 	});
 
 });

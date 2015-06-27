@@ -40,7 +40,7 @@ describe( 'accessor erf', function tests() {
 
 		actual = erf( actual, data, getValue );
 
-		// evaluated on Wolfram Alpha
+		// Evaluated on Wolfram Alpha:
 		expected = [
 			-0.9999779,
 			-0.9953222,
@@ -105,8 +105,29 @@ describe( 'accessor erf', function tests() {
 		}
 	});
 
-	it( 'should return null if provided an empty array', function test() {
-		assert.isNull( erf( [], [], getValue ) );
+	it( 'should return an empty array if provided an empty array', function test() {
+		assert.deepEqual( erf( [], [], getValue ), [] );
+		function getValue( d ) {
+			return d.x;
+		}
+	});
+
+	it( 'should handle non-numeric values by setting the element to NaN', function test() {
+		var data, actual, expected;
+
+		data = [
+			{'x':true},
+			{'x':null},
+			{'x':[]},
+			{'x':{}}
+		];
+		actual = new Array( data.length );
+		actual = erf( actual, data, getValue );
+
+		expected = [ NaN, NaN, NaN, NaN ];
+
+		assert.deepEqual( actual, expected );
+
 		function getValue( d ) {
 			return d.x;
 		}
