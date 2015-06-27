@@ -45,7 +45,8 @@
     "deep",
     "set",
     "get",
-    "deepset"
+    "deepset",
+    "element-wise"
   ],
   "bugs": {
     "url": "https://github.com/compute-io/erf/issues"
